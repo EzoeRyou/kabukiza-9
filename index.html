@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>如何にして私は心配するのをやめてC++を愛するようになったか</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+<section>
+<h1>
+如何にして私は心配するのをやめてC++を愛するようになったのか
+</h1>
+
+<p>
+江添亮
+</p>
+</section>
+
+<section>
+<p>
+江添亮
+</p>
+
+<p>
+ドワンゴ社員
+</p>
+
+<p>
+人体ハック中（減量）
+</p>
+</section>
+
+<section>
+<h1>
+C++の利点
+</h1>
+
+<ul>
+<li>
+C++は個人、企業に所有されていない
+</li>
+<li>
+言語仕様が国際規格で厳格に定められている
+</li>
+<li>
+独立した実装が複数ある
+</li>
+<li>
+C言語との互換性
+</li>
+</ul>
+</section>
+
+<section>
+<h1>
+所有の弊害
+</h1>
+
+<p>
+JavaはOracleによって所有されている
+</p>
+
+<p>
+Oracleの認定を受けないとJavaと名乗れない
+</p>
+
+<p>
+ある程度目立つと叩かれる(Dalvik VM)
+</p>
+</section>
+
+<section>
+<h1>
+規格のない弊害
+</h1>
+
+<p>
+規格がないと実装がすべてとなる
+</p>
+
+</section>
+
+<section>
+<h1>
+独立した実装が複数ある
+</h1>
+
+<p>
+ClangとGCC
+</p>
+
+<p>
+もうひとつぐらいほしいところ。
+</p>
+</section>
+
+<section>
+<h1>
+C言語との互換性
+</h1>
+
+<p>
+C99以降の言語機能には対応していない
+</p>
+
+<p>
+C89との互換性は型システムを強化する際に結構なくなった
+</p>
+
+<p>
+実用上は、CからC++への一方的なABI互換さえあればいい。
+</p>
+
+</section>
+
+<section>
+<h1>
+C++17
+</h1>
+
+<p>
+次のC++規格
+</p>
+
+<p>
+2017年に正式に発行される予定
+</p>
+</section>
+
+<section>
+<h1>
+C++17に何が入るのか
+</h1>
+
+<p>
+それなりにいろいろと入る
+</p>
+
+<p>
+コア言語には大きな変更はない
+</p>
+
+<p>
+ライブラリはいろいろと入る。
+</p>
+</section>
+
+<section>
+<h1>
+コア言語
+</h1>
+
+<p>
+紹介できるわかりやすい機能がない
+</p>
+
+<p>
+
+</P>
+</section>
+
+<section>
+<h1>
+[[nodiscard]]
+</h1>
+
+<p>
+callerに戻り値を無視させない
+</p>
+</section>
+
+<section>
+<h1>
+戻り値のチェック　してますか？
+</h1>
+
+<pre><code>// ディスクにデータを書き込む
+// 失敗するとfalseを返す
+// 戻り値を無視するとデータ消失に気が付かない
+bool commit_to_disk() ;
+// スレッドを作って処理
+// joinable()なスレッドを返す
+// 戻り値を無視するとterminate()
+thread spawn_work() ;
+</code></pre>
+</section>
+
+<section>
+<p>
+無視してはいけない戻り値がある
+</p>
+
+<p>
+でもユーザーは無視する
+</p>
+
+<p>
+無視されるのは言語が寛容だから
+</p>
+</section>
+
+<section>
+<p>
+そこで[[nodiscard]]
+</p>
+
+<p>
+関数に指定すると
+</p>
+
+<p>
+戻り値が使われなかった場合、警告を発する
+</p>
+</section>
+
+<section>
+<pre><code>[[nodiscard]] bool f() ;
+
+int main()
+{
+    f() ; // 警告
+    bool b = f() ; // 無警告
+
+    if ( f() ) // 無警告
+        do_something() ;
+    else
+        do_error() ;
+}
+</code></pre>
+</section>
+
+<section>
+<h1>
+ライブラリ
+</h1>
+
+<p>
+&lt;algorithm&gt;の並列実行版
+</p>
+
+<p>
+&lt;filesystem&gt;, &lt;optional&gt;, &lt;any&gt;, &lt;string_view&gt;などなど
+</p>
+</section>
+
+<section>
+<h1>
+おまけ
+</h1>
+
+<h1>
+C++でAMラジオ鳴らしてみた
+</h1>
+</section>
+
+<section>
+<h1>
+元ネタ
+</h1>
+
+<p>
+<a href="https://github.com/fulldecent/system-bus-radio">https://github.com/fulldecent/system-bus-radio</a>
+</p>
+</section>
+
+<section>
+<p>
+ご家庭のコンピューターはAMラジオ用の微弱無線局になる。
+</p>
+
+<p>
+コンピューターが電力を消費するとき
+</p>
+
+<p>
+一部は漏れて電磁波として放送される
+</p>
+
+<p>
+電磁波ならばラジオで受信できるはず
+</p>
+</section>
+
+<section>
+<p>
+ノイズは面白くない
+</p>
+
+<p>
+音楽を鳴らそう
+</p>
+</section>
+
+<section>
+<p>
+音階の表現方法
+</p>
+
+<p>
+特定の周波数の矩形波を出す
+</p>
+</section>
+
+<section>
+<p>
+矩形波の出し方
+</p>
+
+<p>
+以下の計算式で求めた秒数だけ
+</p>
+
+<p>
+\[\frac{1秒}{周波数 \times 2}\]
+</p>
+
+<ol>
+<li>
+電力を消費する。
+</li>
+
+<li>
+電力消費を控える
+</li>
+
+<li>
+goto 1.
+</li>
+</section>
+
+<section>
+<h1>
+電力を消費する方法
+</h1>
+
+<p>
+ビジーループを回す
+</p>
+
+<p>
+複数のスレッドで回す
+</p>
+
+<p>
+x86-64では、キャッシュを無視してメモリアクセスする命令が最も消費電力が高い
+</p>
+
+</section>
+
+<section>
+
+<h1>
+分解能
+</h1>
+
+<p>
+3000Hzの矩形波を出すためには
+</p>
+
+<p>
+150マイクロ秒の処理が必要
+</p>
+
+<p>
+あまりに処理時間が掛かり過ぎると
+</p>
+
+<p>
+望みの周波数が出せない
+</p>
+
+</section>
+
+<section>
+<h1>
+電力を消費しない方法
+</h1>
+
+<p>
+sleep
+</p>
+
+<p>
+分解能が重要
+</p>
+
+<p>
+3000Hzの矩形波を出すためには
+</p>
+
+<p>
+150マイクロ秒だけsleepする必要がある
+</p>
+
+<p>
+高分解能なタイマーとsleepが必要
+</P>
+
+</section>
+
+<section>
+<p>
+高分解能タイマー
+</p>
+
+<p>
+Linux - clock_gettime
+</p>
+
+<p>
+XNU - mach_absolute_time
+</p>
+
+<p>
+Windows NT - QueryPerformanceCounter
+</p>
+</section>
+
+<section>
+<h1>
+高分解能sleep
+</h1>
+
+<p>
+Linux - nanosleep
+</p>
+
+<p>
+Mac OS X - clock_sleep_trap
+</p>
+
+<p>
+Windows - 存在しない
+</p>
+</section>
+
+
+<section>
+<h1>
+オリジナルの実装
+</h1>
+
+<ul>
+<li>
+C言語
+</li>
+<li>
+スレッドは使わない
+</li>
+
+<li>
+電力消費に_mm_stream_si128(x86,x86-64)を使用
+</li>
+
+<li>
+高分解能タイマーにmach_absolute_time(Mac OS X)を使用
+</li>
+<li>
+高分解能sleepにclock_sleep_trap(Mac OS X)を使用
+</li>
+</ul>
+</section>
+
+<section>
+<h1>Mac OS Xでしか動かない</h1>
+
+<p>
+C++に書き直してやれ
+</p>
+</section>
+
+<section>
+<h1>
+C++11移植
+</h1>
+
+<ul>
+<li>threadとcondition variable</li>
+<li>電力消費にatomic操作</li>
+<li>高分解能タイマーにhigh_resolution_clock</li>
+<li>高分解能sleepにthis_thread::sleep_until</li>
+</ul>
+</section>
+
+<section>
+<h1>
+結果
+</h1>
+
+<p>
+LinuxとMac OS Xで動くようになった
+</p>
+
+<p>
+Windowsでの動作は未報告
+</p>
+
+<p>
+コンパイルは通るらしい
+</p>
+
+<p>
+高精度sleepがないので動作は絶望的
+</p>
+</section>
+
+<section>
+<h1>
+オマケ
+</h1>
+
+<p>
+人体ハック(減量)
+</p>
+</section>
+
+<section>
+<p>
+体重が増えてしまった
+</p>
+
+<p>
+減量しなければならない
+</p>
+</section>
+
+<section>
+<p>
+人体はハックできる
+</p>
+
+<p>
+（人間は減量できる）
+</p>
+
+<p>
+脂肪を減らしたい
+</p>
+
+<p>
+筋肉は減らしたくない
+</p>
+</section>
+
+<section>
+<p>
+脂肪
+</p>
+
+<p>
+酸素と結合することにより、
+</p>
+<p>
+1kgあたり7200k calのエネルギーを取り出せる
+</p>
+
+<p>
+エネルギーを取り出すと残りは水と二酸化炭素
+</p>
+
+<p>
+\[1脂肪 + 2.9酸素 = エネルギー + 2.8二酸化炭素 + 1.1水 \]
+</p>
+</section>
+
+<section>
+<h1>
+都市伝説：脂肪は筋肉になる
+</h1>
+
+<p>
+多くのハッカーではないトレーナーが信じる妄想
+</p>
+</section>
+
+<section>
+<h1>
+減量の原則
+</h1>
+
+<p>
+痩せる重量の計算方法
+</p>
+
+<p>
+\[\frac{摂取キロカロリー - 消費キロカロリー}{7200kcal} = 脂肪(kg)\]
+</p>
+
+</section>
+
+<section>
+<p>
+摂取カロリーとは食事
+</p>
+
+<p>
+消費カロリーとは運動
+</p>
+</section>
+
+<section>
+<p>
+一ヶ月で1kg痩せるには
+</p>
+
+<p>
+一ヶ月7200kcalを食事か運動で減らす
+</p>
+
+<p>
+一日あたり240kcal
+</p>
+</section>
+
+<section>
+<h1>
+運動で減らす
+</h1>
+
+<p>
+ジョギングの消費カロリー
+</p>
+
+<p>
+\[ 体重(kg) \times 距離(km) = 消費キロカロリー\]
+</p>
+</section>
+
+<section>
+<p>
+体重70kgの人間が
+</p>
+
+<p>
+1km走ると70kcal
+</p>
+
+<p>
+4km走ると280kcal
+</p>
+
+<p>
+8km走ると560kcal
+</p>
+</section>
+
+<section>
+<h1>
+食事で減らす
+</h1>
+
+<p>
+ご飯茶碗一杯(140kg)が235kcal
+</p>
+
+<p>
+羊羹(155g)が434kcal
+</p>
+
+<p>
+きのこの山一箱417kcal
+</p>
+
+<p>
+たけのこの里一箱391kcal
+</p>
+</section>
+
+<section>
+<h1>
+ニコナレ
+</h1>
+
+<p>
+<a href="http://niconare.nicovideo.jp/">http://niconare.nicovideo.jp/</a>
+</p>
+
+<p>
+SaaSなスライド資料ホストサービス
+</p>
+</section>
+
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
